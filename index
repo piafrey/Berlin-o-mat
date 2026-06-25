@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Der Berlin-o-Mat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;500;600&family=Source+Sans+3:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #B3171A;
+    --black: #1a1a1a;
+    --gray: #6b6b6b;
+    --line: #d8d4cc;
+    --paper: #faf8f3;
+    --card: #ffffff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--black);
+    font-family: 'Source Sans 3', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 40px 16px 80px;
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: 720px;
+  }
+
+  header {
+    border-bottom: 4px solid var(--red);
+    padding-bottom: 14px;
+    margin-bottom: 6px;
+  }
+
+  h1 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 600;
+    font-size: 38px;
+    letter-spacing: -0.5px;
+    color: var(--black);
+  }
+
+  .subtitle {
+    font-family: 'Source Serif 4', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--gray);
+    margin: 10px 0 30px;
+  }
+
+  #board {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .card {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-top: 4px solid var(--red);
+    padding: 20px 14px;
+    min-height: 170px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: box-shadow 0.15s ease, transform 0.1s ease;
+    perspective: 900px;
+  }
+
+  .card .flip-inner {
+    width: 100%;
+    transform-style: preserve-3d;
+  }
+
+  @keyframes flipPage {
+    0%   { transform: rotateX(0deg); }
+    50%  { transform: rotateX(90deg); }
+    51%  { transform: rotateX(-90deg); }
+    100% { transform: rotateX(0deg); }
+  }
+
+  .flip-inner.flipping {
+    animation: flipPage 0.42s ease-in-out;
+  }
+
+  .card:hover {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    transform: translateY(-1px);
+  }
+
+  .card:active {
+    transform: translateY(0);
+  }
+
+  .card p {
+    font-family: 'Source Serif 4', serif;
+    font-size: 15px;
+    line-height: 1.45;
+    color: var(--black);
+    backface-visibility: hidden;
+  }
+
+  .card.subject p {
+    font-size: 16px;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+
+  button {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    background: transparent;
+    border: 1.5px solid var(--red);
+    color: var(--red);
+    padding: 10px 22px;
+    border-radius: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  button:hover {
+    background: var(--red);
+    color: #fff;
+  }
+
+  button svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .card-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray);
+    opacity: 0;
+    transition: opacity 0.15s ease, color 0.15s ease;
+  }
+
+  .card:hover .card-icon {
+    opacity: 1;
+  }
+
+  .card-icon:hover {
+    color: var(--red);
+  }
+
+  .card-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  @media (max-width: 620px) {
+    #board {
+      grid-template-columns: 1fr;
+    }
+    h1 { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <h1>Der Berlin-o-Mat</h1>
+  </header>
+  <p class="subtitle">Ick sach ma so: zuständig is hier keener, aber jefeiert wird trotzdem.</p>
+
+  <div id="board"></div>
+
+  <div class="controls">
+    <button id="shuffleAll">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path></svg>
+      Allet neu
+    </button>
+  </div>
+
+</div>
+
+<script>
+const left = ["Die letzte bezahlbare Berliner Altbauwohnung","Die Initiative 100 % Tempelhofer Feld","Der Berghain-Türsteher Sven","Die Ex-McKinsey-Beraterin mit Naturweinbar","Das Zimtschneckenregal bei 'Zeit für Brot'","Die WhatsApp-Gruppe der Elterninitiative \"Löwenzahn\"","Das Bürgeramt Friedrichshain-Kreuzberg","Der Döner","Der M29","Der Mieterverein Berlin","Die Hausverwaltung Vonovia","Die BVG-App","Die Schlange vor Mustafa's Gemüse Kebap","Das Spätbier um 3 Uhr morgens","Die WG-Anzeige mit \"nur FLINTA\"","Der Kollwitzplatz-Sandkasten","Der Lastenrad-Papa Tobi aus Köpenick","Der Crack-Pfeifen-Verkäufer am Kottbusser Tor","Die Frau mit Glitzer im Gesicht und Schmetterlingsflügeln an Gleis 7 Ostkreuz","Der Sonnenaufgang über der Warschauer Brücke","Die \"zu verschenken\"-Kiste voller VHS-Kassetten beschriftet mit \"Urlaub 1994\""];
+
+const mid = ["sucht schon wieder einen Mitbewohner","ist komplett eskaliert","macht jetzt Sauerteig-Croissants","kämpft ums nackte Überleben","verlangt inzwischen Eintritt","ist seit fünf Jahren im Kommen","hat jetzt auch ein Keta-Problem","kostet jetzt 9 €","kostet inzwischen 2.400 € warm","ist eigentlich seit 2017 verboten","wurde an die zuständige Stelle verwiesen","ist jetzt endgültig gentrifiziert","hält sich weiterhin für Underground","scheitert an einem Formular","wird nur noch von Hoffnung zusammengehalten","hat einen eigenen Newsletter gestartet","will mehr Kreuzberg wagen","wurde von einem findigen Schwaben 'neu gedacht'","verkauft jetzt Merch","organisiert neuerdings Teambuilding-Events","wartet seit acht Monaten auf einen Termin","wurde zuletzt nüchtern 2018 gesehen","möchte eigentlich nach Leipzig","wurde von zugezogenen Stuttgartern ruiniert","war früher mal gefährlich","wurde in einen Concept-Store umgewandelt","wartet auf die Rückmeldung zur Rückmeldung","existiert derzeit nur als PDF","wurde aus Versehen privatisiert","funktioniert nur Dienstags, 9:30–11:00","ist hier leider nicht zuständig"];
+
+const right = ["und das heißt jetzt \"Community Building\"","und landet trotzdem immer wieder am Kotti","und wartet auf die nächste Finanzierungsrunde","das wird am Rosenthaler Platz noch zum Geschäftsmodell","und bekommt dafür Fördergelder","und findet Zuspruch im Prenzlauer Berg","Ick sach mal so.","Wie immer.","und hat dafür eine Arbeitsgruppe gebildet","und wundert sich über die Wahlergebnisse","aber Hauptsache nicht München","Allet jut.","Ach, Berlin.","und macht daraus einen Podcast","und kennt da jemanden","Wat willste machen.","und nennt das New Work","und wird in Neukölln zur Identität erklärt","Na jut.","Kann man machen.","Kannste dir nicht ausdenken.","und bestellt noch einen Naturwein","Wie immer."];
+
+const cols = [left, mid, right];
+let idx = [0, 28, 0];
+
+function rnd(arr, exclude) {
+  let i;
+  do { i = Math.floor(Math.random() * arr.length); } while (arr.length > 1 && i === exclude);
+  return i;
+}
+
+function render() {
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+  cols.forEach((arr, c) => {
+    const card = document.createElement('div');
+    card.className = 'card' + (c === 0 ? ' subject' : '');
+
+    const inner = document.createElement('div');
+    inner.className = 'flip-inner';
+
+    const p = document.createElement('p');
+    p.textContent = arr[idx[c]];
+
+    const icon = document.createElement('span');
+    icon.className = 'card-icon';
+    icon.title = 'Diese Zeile neu mischen';
+    icon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path></svg>';
+    icon.addEventListener('click', (e) => {
+      e.stopPropagation();
+      flipColumn(c, arr);
+    });
+
+    inner.appendChild(p);
+    card.appendChild(icon);
+    card.appendChild(inner);
+    card.addEventListener('click', () => flipColumn(c, arr));
+    board.appendChild(card);
+  });
+}
+
+function flipColumn(c, arr) {
+  const board = document.getElementById('board');
+  const card = board.children[c];
+  const inner = card.querySelector('.flip-inner');
+  const p = inner.querySelector('p');
+
+  inner.classList.remove('flipping');
+  void inner.offsetWidth;
+  inner.classList.add('flipping');
+
+  const newIdx = rnd(arr, idx[c]);
+  setTimeout(() => {
+    idx[c] = newIdx;
+    p.textContent = arr[newIdx];
+  }, 210);
+
+  inner.addEventListener('animationend', () => {
+    inner.classList.remove('flipping');
+  }, { once: true });
+}
+
+document.getElementById('shuffleAll').addEventListener('click', () => {
+  cols.forEach((arr, c) => flipColumn(c, arr));
+});
+
+render();
+</script>
+
+</body>
+</html>
