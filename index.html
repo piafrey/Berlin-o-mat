@@ -248,6 +248,8 @@ const right = ["und das heißt jetzt \"Community Building\"","und landet trotzde
 const cols = [left, mid, right];
 const placeholders = ["Wer oder was?", "Was passiert damit?", "Pointe?"];
 let idx = [15, 34, 10];
+let firstShuffle = true;
+const firstShuffleIdx = [27, 38, 21]; // Kai Wegner / hasst Termine vor 14:30 / und bestellt noch einen Naturwein
 let editing = [false, false, false];
 
 const shuffleIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path></svg>`;
@@ -381,7 +383,20 @@ function submitCard(c) {
 }
 
 document.getElementById('shuffleAll').addEventListener('click', () => {
-  cols.forEach((arr, c) => { if (!editing[c]) flipColumn(c, arr); });
+  if (firstShuffle) {
+    firstShuffle = false;
+    firstShuffleIdx.forEach((target, c) => {
+      const inner = document.getElementById('inner-' + c);
+      const p = document.getElementById('text-' + c);
+      inner.classList.remove('flipping');
+      void inner.offsetWidth;
+      inner.classList.add('flipping');
+      setTimeout(() => { idx[c] = target; p.textContent = cols[c][target]; }, 210);
+      inner.addEventListener('animationend', () => inner.classList.remove('flipping'), { once: true });
+    });
+  } else {
+    cols.forEach((arr, c) => { if (!editing[c]) flipColumn(c, arr); });
+  }
 });
 
 render();
