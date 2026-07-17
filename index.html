@@ -6,80 +6,77 @@
 <title>Berlin zum Ausflippen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;500;600&family=Source+Sans+3:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --red: #B3171A;
-    --black: #1a1a1a;
-    --gray: #6b6b6b;
-    --line: #d8d4cc;
-    --paper: #faf8f3;
-    --card: #ffffff;
-  }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    background: var(--paper);
-    color: var(--black);
-    font-family: 'Source Sans 3', sans-serif;
+    background: #C84040;
     min-height: 100vh;
+    font-family: 'Source Sans 3', sans-serif;
     display: flex;
-    justify-content: center;
-    padding: 40px 16px 80px;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 24px 60px;
   }
 
-  .wrap { width: 100%; max-width: 720px; }
-
-  header {
-    border-bottom: 4px solid var(--red);
-    padding-bottom: 14px;
-    margin-bottom: 6px;
+  /* ── TITLE ── */
+  .title-block {
+    text-align: center;
+    margin-bottom: 36px;
   }
 
   h1 {
-    font-family: 'Source Serif 4', serif;
-    font-weight: 600;
-    font-size: 38px;
-    letter-spacing: -0.5px;
-    color: var(--black);
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(42px, 7vw, 80px);
+    line-height: 1;
+    color: #fff;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
   }
 
   .subtitle {
-    font-family: 'Source Serif 4', serif;
-    font-style: italic;
-    font-size: 14px;
-    color: var(--gray);
-    margin: 10px 0 30px;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(14px, 2vw, 20px);
+    color: rgba(255,255,255,0.75);
+    font-weight: 700;
   }
 
+  /* ── BOARD ── */
   #board {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 24px;
+    gap: 16px;
+    width: 100%;
+    max-width: 920px;
+    margin-bottom: 28px;
   }
 
   .card {
-    position: relative;
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-top: 4px solid var(--red);
-    padding: 20px 14px 14px;
-    min-height: 170px;
+    border-radius: 999px;
+    border: 2px dashed rgba(255,255,255,0.45);
+    padding: 28px 24px 52px;
+    min-height: 180px;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
     perspective: 900px;
+    position: relative;
+    transition: filter 0.15s;
   }
+
+  .card:hover { filter: brightness(1.08); }
+
+  .card-0 { background: #5B7B9A; }
+  .card-1 { background: #5A8A6A; }
+  .card-2 { background: #B8B840; }
 
   .flip-inner {
     width: 100%;
     transform-style: preserve-3d;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    text-align: center;
   }
 
   @keyframes flipPage {
@@ -89,171 +86,153 @@
     100% { transform: rotateX(0deg); }
   }
 
-  .flip-inner.flipping { animation: flipPage 0.42s ease-in-out; }
+  .flip-inner.flipping { animation: flipPage 0.4s ease-in-out; }
+
+  .card-0 p, .card-1 p { color: #fff; }
+  .card-2 p { color: #1a1a1a; }
 
   .card p {
-    font-family: 'Source Serif 4', serif;
-    font-size: 15px;
-    line-height: 1.45;
-    color: var(--black);
-    backface-visibility: hidden;
-    cursor: pointer;
-  }
-
-  .card textarea {
-    display: none;
-    width: 100%;
-    font-family: 'Source Serif 4', serif;
-    font-size: 14px;
-    line-height: 1.4;
-    resize: none;
-    border: none;
-    outline: none;
-    background: transparent;
-    color: var(--black);
-    min-height: 80px;
-    padding: 0;
-  }
-
-  .card-actions {
-    display: none;
-    justify-content: flex-end;
-    gap: 6px;
-    margin-top: 10px;
-  }
-
-  .btn-submit {
     font-family: 'Source Sans 3', sans-serif;
-    font-size: 12px;
-    padding: 5px 12px;
-    border: 1px solid var(--red);
-    color: var(--red);
-    background: none;
-    cursor: pointer;
-    border-radius: 2px;
-    transition: background 0.15s, color 0.15s;
+    font-size: clamp(18px, 2.2vw, 26px);
+    line-height: 1.3;
+    font-weight: 500;
   }
-
-  .btn-submit:hover { background: var(--red); color: #fff; }
-
-  .btn-cancel {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 12px;
-    padding: 5px 8px;
-    border: none;
-    color: var(--gray);
-    background: none;
-    cursor: pointer;
-  }
-
-  .edit-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--line);
-    padding: 2px;
-    line-height: 1;
-    transition: color 0.15s;
-  }
-
-  .card:hover .edit-btn { color: var(--gray); }
-  .edit-btn.active { color: var(--red); }
-
-  .edit-btn svg { width: 15px; height: 15px; display: block; }
 
   .card-icon {
     position: absolute;
-    top: 30px;
-    right: 8px;
-    width: 26px;
-    height: 26px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--line);
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0.45;
+    transition: opacity 0.2s;
     cursor: pointer;
-    transition: color 0.15s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
   }
 
-  .card:hover .card-icon { color: var(--gray); }
-  .card-icon:hover { color: var(--red); }
-  .card-icon svg { width: 15px; height: 15px; }
+  .card:hover .card-icon { opacity: 0.9; }
 
+  .card-0 .card-icon, .card-1 .card-icon { color: rgba(255,255,255,0.9); }
+  .card-2 .card-icon { color: rgba(0,0,0,0.5); }
+
+  .card-icon svg { width: 18px; height: 18px; display: block; }
+
+  .card-icon span {
+    font-size: 10px;
+    font-family: 'Source Sans 3', sans-serif;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  /* ── CONTROLS ── */
   .controls {
     display: flex;
     justify-content: center;
-    margin-bottom: 8px;
+    margin-bottom: 48px;
   }
 
-  button.shuffle {
+  .btn-shuffle {
     font-family: 'Source Sans 3', sans-serif;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500;
-    background: transparent;
-    border: 1.5px solid var(--red);
-    color: var(--red);
-    padding: 10px 22px;
-    border-radius: 2px;
+    background: #fff;
+    border: none;
+    color: #C84040;
+    padding: 12px 32px;
+    border-radius: 999px;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: background 0.15s, color 0.15s;
+    transition: opacity 0.15s;
   }
 
-  button.shuffle:hover { background: var(--red); color: #fff; }
-  button.shuffle svg { width: 15px; height: 15px; }
+  .btn-shuffle:hover { opacity: 0.85; }
+  .btn-shuffle svg { width: 15px; height: 15px; }
 
-  #toast {
-    display: none;
-    text-align: center;
-    font-family: 'Source Serif 4', serif;
-    font-style: italic;
-    font-size: 13px;
-    color: var(--red);
-    margin-top: 12px;
+  /* ── FOOTER ── */
+  footer {
+    width: 100%;
+    max-width: 920px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.25);
+    padding-top: 24px;
   }
 
-  @media (max-width: 620px) {
+  /* Replace src with actual logo paths in your repo */
+  .logo-tsp {
+    height: 28px;
+    width: auto;
+    filter: brightness(0) invert(1); /* makes dark logo white */
+  }
+
+  .logo-frey {
+    height: 36px;
+    width: auto;
+    filter: brightness(0) invert(1);
+  }
+
+  /* Fallback text if images not found */
+  .logo-tsp-fallback {
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 500;
+    font-size: 17px;
+    letter-spacing: 2.5px;
+    color: #fff;
+    text-transform: uppercase;
+  }
+
+  .logo-frey-fallback {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: #fff;
+    letter-spacing: 3px;
+  }
+
+  @media (max-width: 600px) {
     #board { grid-template-columns: 1fr; }
-    h1 { font-size: 30px; }
+    .card { min-height: 100px; border-radius: 20px; }
   }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header><h1>Berlin zum Ausflippen</h1></header>
-  <p class="subtitle">Ick sach ma so: zuständig is hier keener, aber jefeiert wird trotzdem.</p>
 
-  <div id="board"></div>
-
-  <div class="controls">
-    <button class="shuffle" id="shuffleAll">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path></svg>
-      Allet neu
-    </button>
-  </div>
-
-  <div id="toast">Danke — dein Vorschlag landet in der Redaktion.</div>
+<div class="title-block">
+  <h1>Berlin zum Ausflippen</h1>
+  <p class="subtitle">125.000 Wahrheiten von Kotti bis Kollwitzplatz</p>
 </div>
 
+<div id="board"></div>
+
+<div class="controls">
+  <button class="btn-shuffle" id="shuffleAll">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path></svg>
+    Allet neu
+  </button>
+</div>
+
+<footer>
+  <img src="https://github.com/piafrey/Berlin-o-mat/blob/main/Logo-TSP_neu.png?raw=true" alt="Tagesspiegel" class="logo-tsp">
+  <img src="https://raw.githubusercontent.com/piafrey/Berlin-o-mat/582440216de8a18539c959c1fe6f77e13d57adb2/FREY-Logo-Black.svg" alt="FREY Verlag" class="logo-frey">
+</footer>
+
 <script>
-const left = ["Die letzte bezahlbare Berliner Altbauwohnung","Die Initiative 100 % Tempelhofer Feld","Der Berghain-Türsteher Sven","Die Ex-McKinsey-Beraterin mit Naturweinbar","Das Zimtschneckenregal bei 'Zeit für Brot'","Die WhatsApp-Gruppe der Elterninitiative \"Löwenzahn\"","Das Bürgeramt Friedrichshain-Kreuzberg","Der Döner am Hermannplatz","Der M29","Der Mieterverein Berlin","Die Hausverwaltung Vonovia","Die BVG-App 'Jelbi'","Die Schlange vor Mustafa's Gemüse Kebap","Das Spätbier um 3 Uhr morgens","Die WG-Anzeige mit \"nur FLINTA\"","Der Sandkasten am Helmi","Der Lastenrad-Papa Tobi aus Köpenick","Der Crack-Pfeifen-Verkäufer am Görli","Die Frau mit Glitzer im Gesicht und Schmetterlingsflügeln an Gleis 7 Ostkreuz","Der Sonnenaufgang über der Warschauer Brücke","Der Koffer voller VHS-Kassetten beschriftet mit \"Urlaub 1994\"","Der letzte echte Späti","Die Ex-Hausbesetzerin Gitte","Das letzte beheizte Schwimmbad","Eine Neuköllner Keramikerin","Die Signal-Gruppe 'Mietendeckel Jetzt!'","Der eine Mensch, der noch die \"Bar25\" erlebt hat","Kai Wegner","Der Koalitionsausschuss","Die Friedrichshainer Baustadträtin","Der Grünen-Kreisverband Mitte","Ein Sprecher der Letzten Generation","Der Initiator der Petition \"Keine SUVs vor LPG\"","Eine gendersensible Parkuhr","Der Alex","Die Betreiberin eines Charlottenburger Nagelstudios","Der Makler, der den Wedding 'das neue Kreuzberg' nennt","Ein Raver mit Gehörschutz und Brotdose","Ein Schallschutzgutachter, der angeblich früher mal DJ war","Der letzte Befürworter der A100"];
-const mid = ["sucht schon wieder einen Mitbewohner","ist komplett eskaliert","macht jetzt Sauerteig-Croissants","kämpft ums nackte Überleben","verlangt inzwischen Eintritt","ist seit fünf Jahren im Kommen","hat jetzt auch ein Keta-Problem","erholt sich immer noch vom Winter 2021","kostet inzwischen 2.400 € warm","ist eigentlich seit 2017 verboten","wurde an die zuständige Stelle verwiesen","ist jetzt endgültig gentrifiziert","hält sich weiterhin für Underground","scheitert an einem Formular","wird nur noch von Hoffnung zusammengehalten","hat einen eigenen Newsletter gestartet","will mehr Kreuzberg wagen","wurde von einem findigen Schwaben 'neu gedacht'","verkauft jetzt Merch","organisiert neuerdings Teambuilding-Events","wartet seit acht Monaten auf einen Termin","wurde zuletzt nüchtern 2018 gesehen","möchte eigentlich nach Leipzig","wurde von zugezogenen Stuttgartern ruiniert","war früher mal gefährlich","ist jetzt ein Concept Store","wartet auf die Rückmeldung zur Rückmeldung","existiert derzeit nur als PDF","wurde aus Versehen privatisiert","funktioniert nur Dienstags, 9:30–11:00","ist hier leider nicht zuständig","liegt in einer 'zu verschenken'-Kiste am Hermannplatz","wurde verbeamtet","bietet jetzt auch Reformer Pilates an","hat jetzt ein Awareness-Team","ist jetzt auch traumasensibel","fühlt sich von E-Scootern getriggert","reflektiert neuerdings Privilegien","hasst Termine vor 14:30","nimmt seit dem letzten IT-Totalausfall nur noch Faxe entgegen","hat ein Lärmgutachten über die Geräuschkulisse von Spätis verfasst"];
-const right = ["und das heißt jetzt \"Community Building\"","und landet trotzdem immer wieder am Kotti","und wartet auf die nächste Finanzierungsrunde","das wird am Rosenthaler Platz noch zum Geschäftsmodell","und bekommt dafür Fördergelder","und findet Zuspruch im Prenzlauer Berg","Ick sach mal so.","Wie immer.","und hat dafür eine Arbeitsgruppe gebildet","und wundert sich über die Wahlergebnisse","aber Hauptsache nicht München","Allet jut.","Ach, Berlin.","und macht daraus einen Podcast","und kennt da jemanden","Wat willste machen.","und nennt das New Work","und wird in Neukölln zur Identität erklärt","Na jut.","Kann man machen.","Kannste dir nicht ausdenken.","und bestellt noch einen Naturwein","und bietet dafür Coachings an","und deshalb ziehen alle nach Pankow","von wegen 'arm aber sexy'","da bleibt nur noch die Flucht nach Brandenburg","da geht man am besten erstmal eine Runde Tennis spielen","das wird nach der Sommerpause aufgearbeitet","dazu gibt es bereits eine Taskforce","aber das ist historisch gewachsen","das wird nochmal neu ausgeschrieben","mehr dazu morgen im 'Checkpoint'","Bitte wenden Sie sich an das Bürgeramt.","Willkommen in Berlin.","Jetzt ergibt alles Sinn.","Yallah."];
+const left = ["Die letzte bezahlbare Berliner Altbauwohnung","Die Initiative 100 % Tempelhofer Feld","Der Berghain-Türsteher Sven","Die Ex-McKinsey-Beraterin mit Naturweinbar","Das Zimtschneckenregal bei 'Zeit für Brot'","Die WhatsApp-Gruppe der Elterninitiative Löwenzahn","Das Bürgeramt Friedrichshain-Kreuzberg","Der Döner am Hermannplatz","Der M29","Der Mieterverein Berlin","Die Hausverwaltung Vonovia","Die BVG-App 'Jelbi'","Die Schlange vor Mustafa's Gemüse Kebap","Das Spätbier um 3 Uhr morgens","Die WG-Anzeige mit \"nur FLINTA\"","Der Sandkasten am Helmi","Der Lastenrad-Papa Tobi aus Köpenick","Der Crack-Pfeifen-Verkäufer am Görli","Die Frau mit Glitzer im Gesicht und Schmetterlingsflügeln an Gleis 7 Ostkreuz","Der Sonnenaufgang über der Warschauer Brücke","Der Koffer voller VHS-Kassetten beschriftet mit \"Urlaub 1994\"","Der letzte echte Späti","Ex-Hausbesetzerin Gitte","Das einzige beheizte Schwimmbad","Eine Neuköllner Keramikerin","Die Signal-Gruppe 'Enteignung Jetzt!'","Der eine Mensch, der noch die \"Bar25\" erlebt hat","Kai Wegner","Der Koalitionsausschuss","Die Friedrichshainer Baustadträtin","Der Grünen-Kreisverband Mitte","Ein Sprecher der Letzten Generation","Der Initiator der Petition \"Keine SUVs vor LPG\"","Eine gendersensible Parkuhr","Der Alex","Die Betreiberin eines Charlottenburger Nagelstudios","Der Makler, der Reinickendorf 'das neue Kreuzberg' nennt","Ein Raver mit Gehörschutz und Brotdose","Ein Schallschutzgutachter, der angeblich früher mal DJ war","Der letzte Befürworter der A100","Der Rollkoffer-Touri","Klaus Wowereit","Der IT-Beauftragte der Senatsinnenverwaltung","Der Psycho von nebenan","Ganz Zehlendorf","Die erste Brennpunktschule in Dahlem","Die neue Verkehrssenatorin","Der neue Amazon-Tower","Ein Poller im Grunewald","Die Bier-Yoga-Lehrerin","Der neue Hertha-Investor","Eine Ein-Mann-Demo vorm Brandenburger Tor","Die Adlon-Chefin","Der Geist von Eisbär Knut","Frank Zander","Ein enttäuschter schwedischer Investor","Der Berliner Zweig der AfD","David Hasselhoff","Der Bratschist aus der Philharmonie","Lars Eidingers Nageldesignerin","Die Checkpoint-Band","Der Hausmeister der Tesla-Fabrik"];
+
+const mid = ["sucht schon wieder einen Mitbewohner","ist komplett eskaliert","macht jetzt Sauerteig-Croissants","kämpft ums nackte Überleben","verlangt inzwischen Eintritt","ist seit fünf Jahren im Kommen","hat jetzt auch ein Keta-Problem","erholt sich immer noch vom Winter 2021","kostet inzwischen 2.400 € warm","ist eigentlich seit 2017 verboten","wurde an die zuständige Stelle verwiesen","ist jetzt endgültig gentrifiziert","hält sich weiterhin für Underground","scheitert an einem Formular","wird nur noch von Hoffnung zusammengehalten","hat einen eigenen Newsletter gestartet","will mehr Kreuzberg wagen","wurde von einem findigen Schwaben 'neu gedacht'","verkauft jetzt Merch","organisiert neuerdings Teambuilding-Events","wartet seit acht Monaten auf einen Termin","wurde zuletzt nüchtern 2018 gesehen","möchte eigentlich nach Leipzig","wurde von zugezogenen Stuttgartern ruiniert","war früher mal gefährlich","ist jetzt ein Concept Store","wartet auf die Rückmeldung zur Rückmeldung","existiert derzeit nur als PDF","wurde aus Versehen privatisiert","funktioniert nur dienstags, 9:30–11:00","ist hier leider nicht zuständig","liegt in einer 'zu verschenken'-Kiste am Hermannplatz","wurde verbeamtet","bietet jetzt auch Reformer Pilates an","hat jetzt ein Awareness-Team","ist jetzt auch traumasensibel","ist schon wieder über einen E-Scooter gestolpert","reflektiert neuerdings Privilegien","hasst Termine vor 14:30","benutzt jetzt endlich Windows 98","hat ein Lärmgutachten über die Geräuschkulisse von Spätis verfasst","kann sich das mit den verlorenen Wahlzetteln 2021 auch nicht erklären","ist gerade noch beim Tennis","hat schon wieder die Polizei gerufen","ist jetzt nachts geschlossen","ist auch schon mal Marathon gelaufen","hat sich von der SPD abgewendet","hat eine Zauneidechse gefunden","will das kostenlose Mittagessen abschaffen","will eine Magnetschwebebahn bauen","ist jetzt auch für die Randbebauung des Tempelhofer Feldes","geht jetzt immer zu den Union-Frauen","hat sich in der Uckermark verkalkuliert","hat jetzt einen Garten","will einfach nur normale Milch","will jetzt Townhouses in Hohenschönhausen bauen","macht jetzt Currywurst mit Blattgold","zieht neben's SO36","will unbedingt mal nach Spandau","hat jetzt auch Bienen auf dem Dach","liebt den Potsdamer Platz","bietet Mietendeckel-Merch an","fährt nur noch mit dem Doppeldecker-Bus","hat auch eine Idee fürs ICC","steht mal wieder auf der Heerstraße im Stau","klebt noch auf der A100","hält immer noch den Sicherheitsabstand ein","versteht Berlin nicht"];
+
+const right = ["und das heißt jetzt \"Community Building\"","und landet trotzdem immer wieder am Kotti","und wartet auf die nächste Finanzierungsrunde","das wird am Rosenthaler Platz noch zum Geschäftsmodell","und bekommt dafür Fördergelder","und findet Zuspruch in Prenzlauer Berg","Ick sach mal so.","Wie immer.","und hat dafür eine Arbeitsgruppe gebildet","und wundert sich über die Wahlergebnisse","aber Hauptsache nicht München.","Allet jut.","Ach, Berlin.","und macht daraus einen Podcast","und kennt da jemanden","Wat willste machen.","und nennt das New Work","und wird in Neukölln zur Identität erklärt","Na jut.","Kann man machen.","Kannste dir nicht ausdenken.","und bestellt noch einen Naturwein","und bietet dafür Coachings an","und deshalb ziehen alle nach Pankow","von wegen 'arm aber sexy'","da bleibt nur noch die Flucht nach Brandenburg","das wird nach der Sommerpause aufgearbeitet","dazu gibt es bereits eine Taskforce","aber das ist historisch gewachsen","das wird nochmal neu ausgeschrieben","mehr dazu morgen im 'Checkpoint'","Bitte wenden Sie sich an das Bürgeramt.","Willkommen in Berlin.","Jetzt ergibt alles Sinn.","Yallah.","Schnauze.","aber der Wedding kommt","aber ist noch beim Tennis","aber hat eine Vision für Berlin","das lösen wir mit einem Zaun","aber hat die Lage im Griff","ist aber immer erreichbar","zieh doch nach Kassel","ist aber genderneutral","bitte genderneutral","das ist lebensverändernd","wer soll das bezahlen?","und alle hassen es","was würde Udo Waltz dazu sagen?","immerhin gibt es wieder Kitaplätze","aber draußen gibt es nur Kännchen","erstmal eine Lärmklage","Not in my Backyard.","Hashtag Foodporn.","und keiner weiß warum","ist das eigentlich DSGVO-konform?","scheitert an der unteren Denkmalsschutzbehörde","und wartet immer noch auf den M29","aber findet Berlin irre spannend","aber alle hassen Hamburg","und heißt jetzt Rio-Reiser-Platz"];
 
 const cols = [left, mid, right];
-const placeholders = ["Wer oder was?", "Was passiert damit?", "Pointe?"];
 let idx = [15, 34, 10];
 let firstShuffle = true;
-const firstShuffleIdx = [27, 38, 21]; // Kai Wegner / hasst Termine vor 14:30 / und bestellt noch einen Naturwein
-let editing = [false, false, false];
-
-const shuffleIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path></svg>`;
-const pencilIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 1-2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`;
+const firstShuffleIdx = [27, 38, 21];
 
 function rnd(arr, exclude) {
   let i;
@@ -261,18 +240,14 @@ function rnd(arr, exclude) {
   return i;
 }
 
+const shuffleIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path></svg>`;
+
 function render() {
   const board = document.getElementById('board');
   board.innerHTML = '';
   cols.forEach((arr, c) => {
     const card = document.createElement('div');
-    card.className = 'card';
-
-    const editBtn = document.createElement('button');
-    editBtn.className = 'edit-btn';
-    editBtn.title = 'Eigenen Vorschlag einreichen';
-    editBtn.innerHTML = pencilIcon;
-    editBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleEdit(c); });
+    card.className = 'card card-' + c;
 
     const inner = document.createElement('div');
     inner.className = 'flip-inner';
@@ -281,105 +256,30 @@ function render() {
     const p = document.createElement('p');
     p.id = 'text-' + c;
     p.textContent = arr[idx[c]];
-    p.addEventListener('click', () => { if (!editing[c]) flipColumn(c, arr); });
 
-    const ta = document.createElement('textarea');
-    ta.id = 'input-' + c;
-    ta.placeholder = placeholders[c];
-    ta.rows = 4;
-
-    const iconWrap = document.createElement('span');
-    iconWrap.className = 'card-icon';
-    iconWrap.title = 'Neue Zeile';
-    iconWrap.innerHTML = shuffleIcon;
-    iconWrap.addEventListener('click', (e) => { e.stopPropagation(); if (!editing[c]) flipColumn(c, arr); });
+    const icon = document.createElement('span');
+    icon.className = 'card-icon';
+    icon.title = 'Neue Zeile';
+    icon.innerHTML = shuffleIcon;
+    icon.addEventListener('click', e => { e.stopPropagation(); flipCol(c); });
 
     inner.appendChild(p);
-    inner.appendChild(ta);
-
-    const actions = document.createElement('div');
-    actions.className = 'card-actions';
-    actions.id = 'actions-' + c;
-
-    const btnSubmit = document.createElement('button');
-    btnSubmit.className = 'btn-submit';
-    btnSubmit.textContent = 'Einreichen';
-    btnSubmit.addEventListener('click', () => submitCard(c));
-
-    const btnCancel = document.createElement('button');
-    btnCancel.className = 'btn-cancel';
-    btnCancel.textContent = '✕ Abbrechen';
-    btnCancel.addEventListener('click', () => cancelEdit(c));
-
-    actions.appendChild(btnCancel);
-    actions.appendChild(btnSubmit);
-
-    card.appendChild(editBtn);
-    card.appendChild(iconWrap);
+    card.appendChild(icon);
     card.appendChild(inner);
-    card.appendChild(actions);
+    card.addEventListener('click', () => flipCol(c));
     board.appendChild(card);
   });
 }
 
-function flipColumn(c, arr) {
-  if (editing[c]) return;
+function flipCol(c) {
   const inner = document.getElementById('inner-' + c);
   const p = document.getElementById('text-' + c);
   inner.classList.remove('flipping');
   void inner.offsetWidth;
   inner.classList.add('flipping');
-  const newIdx = rnd(cols[c], idx[c]);
-  setTimeout(() => { idx[c] = newIdx; p.textContent = cols[c][newIdx]; }, 210);
+  const ni = rnd(cols[c], idx[c]);
+  setTimeout(() => { idx[c] = ni; p.textContent = cols[c][ni]; }, 200);
   inner.addEventListener('animationend', () => inner.classList.remove('flipping'), { once: true });
-}
-
-function toggleEdit(c) {
-  editing[c] = true;
-  document.getElementById('text-' + c).style.display = 'none';
-  const ta = document.getElementById('input-' + c);
-  ta.style.display = 'block';
-  document.getElementById('actions-' + c).style.display = 'flex';
-  const btn = document.querySelector('.card:nth-child(' + (c+1) + ') .edit-btn');
-  if (btn) btn.classList.add('active');
-  // hide shuffle icon
-  const iconWrap = document.querySelector('.card:nth-child(' + (c+1) + ') .card-icon');
-  if (iconWrap) iconWrap.style.display = 'none';
-  ta.focus();
-}
-
-function cancelEdit(c) {
-  editing[c] = false;
-  document.getElementById('text-' + c).style.display = 'block';
-  const ta = document.getElementById('input-' + c);
-  ta.style.display = 'none';
-  ta.value = '';
-  document.getElementById('actions-' + c).style.display = 'none';
-  const btn = document.querySelector('.card:nth-child(' + (c+1) + ') .edit-btn');
-  if (btn) btn.classList.remove('active');
-  const iconWrap = document.querySelector('.card:nth-child(' + (c+1) + ') .card-icon');
-  if (iconWrap) iconWrap.style.display = 'flex';
-}
-
-const toastMsgs = [
-  "Ick hab's. Wird geprüft. Dauert.",
-  "Einjereicht. Zuständig is jemand anderes.",
-  "Annjenommen. Ob det wat wird, weeß ick ooch nich."
-];
-let lastToast = -1;
-
-function submitCard(c) {
-  const val = document.getElementById('input-' + c).value.trim();
-  if (!val) return;
-  console.log('Vorschlag Spalte ' + c + ':', val);
-  cancelEdit(c);
-  let i;
-  do { i = Math.floor(Math.random() * toastMsgs.length); } while (i === lastToast);
-  lastToast = i;
-  const toast = document.getElementById('toast');
-  toast.textContent = toastMsgs[i];
-  toast.style.display = 'block';
-  setTimeout(() => { toast.style.display = 'none'; }, 3500);
 }
 
 document.getElementById('shuffleAll').addEventListener('click', () => {
@@ -391,11 +291,11 @@ document.getElementById('shuffleAll').addEventListener('click', () => {
       inner.classList.remove('flipping');
       void inner.offsetWidth;
       inner.classList.add('flipping');
-      setTimeout(() => { idx[c] = target; p.textContent = cols[c][target]; }, 210);
+      setTimeout(() => { idx[c] = target; p.textContent = cols[c][target]; }, 200);
       inner.addEventListener('animationend', () => inner.classList.remove('flipping'), { once: true });
     });
   } else {
-    cols.forEach((arr, c) => { if (!editing[c]) flipColumn(c, arr); });
+    cols.forEach((_, c) => flipCol(c));
   }
 });
 
